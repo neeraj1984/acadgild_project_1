@@ -1,0 +1,41 @@
+/#############problem 1 #############/
+
+/* to save the pig relation in hdfs/*
+/*output folder should not be created before below command it gets created automatically or else it throws exception*/
+
+store c into 'hdfs://localhost:9000/pig_output2/' using PigStorage(',');
+
+
+hadoop fs -cat /pig_output2/part-m-00000
+
+
+sudo /sbin/service mysqld start
+
+use mydb;
+
+
+create table pig_import_data_1(state varchar(100),district varchar(100),objective varchar(100),performance varchar(100));
+
+
+sqoop export --connect jdbc:mysql://localhost/mydb --username 'root' -P --table 'pig_import_data_1' --export-dir '/pig_output2/part-m-00000'
+
+select * from pig_import_data_1;
+
+256 records
+
+/#############problem 2 #############/
+store d into 'hdfs://localhost:9000/pig_output3/' using PigStorage(',');
+
+hadoop fs -cat /pig_output3/part-m-00000
+
+create table pig_import_data_2(state varchar(100),district varchar(100));
+
+sqoop export --connect jdbc:mysql://localhost/mydb --username 'root' -P --table 'pig_import_data_2' --export-dir '/pig_output3/part-m-00000'
+
+select * from pig_import_data_2;
+
+176 records
+
+
+
+

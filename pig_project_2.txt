@@ -1,0 +1,14 @@
+register /home/neeraj/Downloads/pig_xml.jar;
+
+a = LOAD '/flume_import2/StatewiseDistrictwisePhysicalProgress.xml' using pig.XML.newloader('row') as (x:chararray);
+
+dump a;
+
+b = FOREACH a GENERATE FLATTEN(REGEX_EXTRACT_ALL(x,'(?s)<row>.*?<State_Name>([^>]*?)</State_Name>.*?<District_Name>([^>]*?)</District_Name>.*?<Project_Objectives_IHHL_BPL>([^>]*?)</Project_Objectives_IHHL_BPL>.*?<Project_Performance-IHHL_BPL>([^>]*?)</Project_Performance-IHHL_BPL>.*?</row>')) as (state:chararray,district:chararray,objective:int,performance:int);
+
+dump b;
+
+c = filter b by performance >= objective;
+
+dump c;
+

@@ -1,0 +1,19 @@
+register /home/neeraj/Downloads/pig_xml.jar;
+register /home/neeraj/pig_udf3.jar;
+
+
+a = LOAD '/flume_import2/StatewiseDistrictwisePhysicalProgress.xml' using pig.XML.newloader('row') as (x:chararray);
+
+dump a;
+
+b = FOREACH a GENERATE FLATTEN(REGEX_EXTRACT_ALL(x,'(?s)<row>.*?<State_Name>([^>]*?)</State_Name>.*?<District_Name>([^>]*?)</District_Name>.*?<Project_Objectives_IHHL_BPL>([^>]*?)</Project_Objectives_IHHL_BPL>.*?<Project_Performance-IHHL_BPL>([^>]*?)</Project_Performance-IHHL_BPL>.*?</row>')) as (state:chararray,district:chararray,objective:chararray,performance:chararray);
+
+dump b;
+
+c = FOREACH b GENERATE pig_udf_3.CheckAverage(state,district,objective,performance);
+
+dump c;
+/* this is to remove empty tuples*/
+d = filter c by NOT($0 IS NULL);
+
+dump d;
