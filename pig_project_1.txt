@@ -1,5 +1,4 @@
 hadoop fs -mkdir flume/import2
-hadoop fs -put /home/desktop/StatewiseDistrictwisePhysicalProgress.xml /fulme_import2/
 
 hadoop fs -mkdir /jarfiles
 hadoop fs -put /home/neeraj/Downloads/pig_xml.jar /jarfiles/
